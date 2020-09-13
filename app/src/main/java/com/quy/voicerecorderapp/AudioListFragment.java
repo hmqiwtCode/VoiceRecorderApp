@@ -221,5 +221,25 @@ public class AudioListFragment extends Fragment implements AudioListAdapter.OnIt
         };
         seekBarHandler.postDelayed(updateSeekBar,0);
 
+        player_seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(mediaPlayer != null && fromUser){
+                    mediaPlayer.seekTo(progress); // clear ' * 1000  '
+                }
+            }
+        });
+
     }
 }
