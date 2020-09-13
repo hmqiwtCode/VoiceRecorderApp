@@ -134,11 +134,36 @@ public class AudioListFragment extends Fragment implements AudioListAdapter.OnIt
 
             }
         });
+
+        btn_play_audio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isPlay){
+                    pauseAudio();
+                }else{
+                    if (fileAudioPlay != null)
+                        resumeAudio();
+                }
+            }
+        });
+    }
+
+    private void pauseAudio(){
+        mediaPlayer.pause();
+        btn_play_audio.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_play_arrow_24));
+        isPlay = false;
+    }
+
+    private void resumeAudio(){
+        mediaPlayer.start();
+        btn_play_audio.setImageDrawable(getResources().getDrawable(R.drawable.ic_baseline_pause_24));
+        isPlay = true;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         Log.e("LOG", "DESTROY");
     }
 
@@ -191,8 +216,10 @@ public class AudioListFragment extends Fragment implements AudioListAdapter.OnIt
             @Override
             public void run() {
                 player_seekbar.setProgress(mediaPlayer.getCurrentPosition());
+                seekBarHandler.postDelayed(this,500);
             }
         };
+        seekBarHandler.postDelayed(updateSeekBar,0);
 
     }
 }
