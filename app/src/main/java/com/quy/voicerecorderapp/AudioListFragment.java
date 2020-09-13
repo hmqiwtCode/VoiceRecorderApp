@@ -1,11 +1,11 @@
 package com.quy.voicerecorderapp;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
@@ -32,10 +31,14 @@ public class AudioListFragment extends Fragment implements AudioListAdapter.OnIt
     private BottomSheetBehavior bottomSheetBehavior;
     private RecyclerView cv_list_audio;
     private ConstraintLayout player_sheet;
-    private  AudioListAdapter audioListAdapter;
+    private AudioListAdapter audioListAdapter;
+    private MediaPlayer mediaPlayer;
 
+    private boolean isPlay = false;
     private boolean isCollapsed = false;
+
     File[] allFiles;
+    File fileAudioPlay;
 
 
     public AudioListFragment() {
@@ -72,14 +75,14 @@ public class AudioListFragment extends Fragment implements AudioListAdapter.OnIt
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.e("LOG","CREATE");
+        Log.e("LOG", "CREATE");
         player_sheet = view.findViewById(R.id.player_sheet);
         cv_list_audio = view.findViewById(R.id.cv_list_audio);
 
         String recordPath = getActivity().getExternalFilesDir("/").getAbsolutePath();
         File file = new File(recordPath);
         allFiles = file.listFiles();
-        audioListAdapter = new AudioListAdapter(allFiles,this);
+        audioListAdapter = new AudioListAdapter(allFiles, this);
 
         cv_list_audio.setHasFixedSize(true);
         cv_list_audio.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -91,20 +94,20 @@ public class AudioListFragment extends Fragment implements AudioListAdapter.OnIt
         player_sheet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            if (isCollapsed){
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-                isCollapsed = false;
-            }else{
-                bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                isCollapsed = true;
+                if (isCollapsed) {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    isCollapsed = false;
+                } else {
+                    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    isCollapsed = true;
+                }
             }
-        }
-    });
+        });
 
         bottomSheetBehavior.addBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
-                if (newState == BottomSheetBehavior.STATE_HIDDEN){
+                if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                     bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
                 }
             }
@@ -119,11 +122,35 @@ public class AudioListFragment extends Fragment implements AudioListAdapter.OnIt
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.e("LOG","DESTROY");
+        Log.e("LOG", "DESTROY");
     }
 
     @Override
     public void onClickListener(File file, int position) {
+        Log.e("ERROR", file.getName());
+        if (isPlay) {
+            stopAudio();
+            playAudio(fileAudioPlay);
+        } else {
+            fileAudioPlay = file;
+            playAudio(fileAudioPlay);
+        }
+    }
 
+    private void stopAudio() {
+        isPlay = false;
+    }
+
+    private void playAudio(File fileAudioPlay) {
+        mediaPlayer = new MediaPlayer();
+        try {
+            mediaPlayer.setDataSource(fileAudioPlay.getAbsolutePath());
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        isPlay = true;
     }
 }
