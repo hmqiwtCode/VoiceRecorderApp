@@ -7,8 +7,10 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +21,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import java.io.File;
 
 
-public class AudioListFragment extends Fragment {
+public class AudioListFragment extends Fragment implements AudioListAdapter.OnItemListClickListener {
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -30,6 +32,7 @@ public class AudioListFragment extends Fragment {
     private BottomSheetBehavior bottomSheetBehavior;
     private RecyclerView cv_list_audio;
     private ConstraintLayout player_sheet;
+    private  AudioListAdapter audioListAdapter;
 
     private boolean isCollapsed = false;
     File[] allFiles;
@@ -69,12 +72,19 @@ public class AudioListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Log.e("LOG","CREATE");
         player_sheet = view.findViewById(R.id.player_sheet);
         cv_list_audio = view.findViewById(R.id.cv_list_audio);
 
         String recordPath = getActivity().getExternalFilesDir("/").getAbsolutePath();
         File file = new File(recordPath);
         allFiles = file.listFiles();
+        audioListAdapter = new AudioListAdapter(allFiles,this);
+
+        cv_list_audio.setHasFixedSize(true);
+        cv_list_audio.setLayoutManager(new LinearLayoutManager(getContext()));
+        cv_list_audio.setAdapter(audioListAdapter);
+
 
         bottomSheetBehavior = BottomSheetBehavior.from(player_sheet);
 
@@ -104,5 +114,16 @@ public class AudioListFragment extends Fragment {
 
             }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e("LOG","DESTROY");
+    }
+
+    @Override
+    public void onClickListener(File file, int position) {
+
     }
 }
