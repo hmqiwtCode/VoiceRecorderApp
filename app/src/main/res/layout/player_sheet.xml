@@ -8,6 +8,7 @@
     android:layout_height="wrap_content"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
     app:behavior_hideable="true"
+    android:id="@+id/player_sheet"
     app:behavior_peekHeight="48dp">
 
     <LinearLayout
@@ -67,9 +68,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/btn_player_play"
         android:layout_width="wrap_content"
+        android:background="@null"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:padding="20dp"
@@ -78,22 +80,24 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_file_name"
         app:srcCompat="@drawable/ic_play" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="20dp"
+        android:background="@null"
         app:layout_constraintBottom_toBottomOf="@+id/btn_player_play"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_player_play"
         app:layout_constraintTop_toTopOf="@+id/btn_player_play"
         app:srcCompat="@drawable/ic_next" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/imageView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="20dp"
+        android:background="@null"
         app:layout_constraintBottom_toBottomOf="@+id/btn_player_play"
         app:layout_constraintEnd_toStartOf="@+id/btn_player_play"
         app:layout_constraintStart_toStartOf="parent"

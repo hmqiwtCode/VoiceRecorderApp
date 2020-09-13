@@ -46,12 +46,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_record_file_name" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/btn_record"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:src="@drawable/ic_stop"
+        android:background="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -59,10 +60,11 @@
         app:layout_constraintTop_toBottomOf="@+id/ct_record_timer"
         app:layout_constraintVertical_bias="0.339" />
 
-    <ImageView
+    <ImageButton
         android:id="@+id/btn_record_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@null"
         app:layout_constraintTop_toTopOf="@+id/btn_record"
         app:layout_constraintBottom_toBottomOf="@+id/btn_record"
         app:layout_constraintStart_toEndOf="@+id/btn_record"
